@@ -11,16 +11,19 @@ import PageNotFound from "./pages/PageNotFound";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    staleTime : 60 * 1000,
+    staleTime: 0,
   },
 });
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
@@ -37,7 +40,8 @@ function App() {
           <Route path="login" element={<Login />} />
         </Routes>
       </BrowserRouter>
-    </QueryPr>
+      <Toaster position="top-right" />
+    </QueryClientProvider>
   );
 }
 
