@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import CabinRow from "./CabinRow";
-import { getCabins } from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
+import { useCabin } from "./useCabin";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -29,10 +28,7 @@ const TableHeader = styled.header`
 `;
 
 function CabinTable() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
-  });
+  const { data, isLoading, error } = useCabin();
   if (error) return <div>There is an error fetching the data check if your are offline</div>
   if (isLoading) return <Spinner />;
   return (
