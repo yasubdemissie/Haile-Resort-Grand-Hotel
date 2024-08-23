@@ -42,6 +42,8 @@ export async function addCabin(cabin, id) {
     console.error(error);
     throw new Error(error.message);
   }
+
+  if (hasImageLink) return data;
   // upload the image
   const { error: storageError } = await supabase.storage
     .from("cabin-image")
