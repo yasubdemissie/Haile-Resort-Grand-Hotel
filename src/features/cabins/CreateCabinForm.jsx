@@ -46,7 +46,7 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({ cabin = {} }) {
+function CreateCabinForm({ cabin = {}, closeModal, closeForm }) {
   const { id: editId } = cabin;
   const toEdit = Boolean(editId);
   const { createCabin, createLoad } = useCreateCabin();
@@ -65,14 +65,29 @@ function CreateCabinForm({ cabin = {} }) {
   });
 
   function onSubmit(newCabin) {
+    const image =
+      typeof newCabin.image === "string" ? newCabin.image : newCabin.image[0];
 
-    const image = typeof newCabin.image === 'string' ? newCabin.image : newCabin.image[0];
-
-    if (toEdit) EditCabin({cabin : {...newCabin, image: image}, id: editId});
-    else createCabin({ ...newCabin, image: image }, {
-      onSuccess: reset(),
-    });
-
+    if (toEdit)
+      EditCabin(
+        { cabin: { ...newCabin, image: image }, id: editId },
+        {
+          onSuccess: () => {
+            closeForm?.();
+          },
+        }
+      );
+    else
+      createCabin(
+        { ...newCabin, image: image },
+        {
+          onSuccess: () => {
+            reset();
+            closeModal?.();
+            closeForm?.();
+          },
+        }
+      );
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -170,7 +185,11 @@ function CreateCabinForm({ cabin = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => closeModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={loading}>
