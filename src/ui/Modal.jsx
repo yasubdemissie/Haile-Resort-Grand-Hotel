@@ -1,7 +1,14 @@
-import { cloneElement, createContext, useContext, useRef, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import { clickOutside } from "../hooks/useClickOutside";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -85,13 +92,7 @@ function Window({ children, name }) {
   if (name !== openedApp) return;
 
   return createPortal(
-    <Overlay
-      onClick={(e) => {
-        if (e.target.contains(element.current)) {
-          close();
-        };
-      }}
-    >
+    <Overlay onClick={(e) => clickOutside(e, element, close)}>
       <StyledModal ref={element}>
         <Button onClick={close}>
           <HiXMark />
