@@ -111,9 +111,9 @@ function CabinRow({ cabin }) {
           </div>
           <Menus.Toggle id={id} />
           <Menus.List id={id}>
-            <Menus.Button>duplicate</Menus.Button>
-            <Menus.Button>Update</Menus.Button>
-            <Menus.Button>Delete</Menus.Button>
+            <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>duplicate</Menus.Button>
+            <Menus.Button icon={<HiPencil />}>Update</Menus.Button>
+            <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
           </Menus.List>
         </Menus>
       </Table.Row>

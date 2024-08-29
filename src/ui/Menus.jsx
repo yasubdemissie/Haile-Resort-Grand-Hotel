@@ -1,6 +1,8 @@
 import { createContext, useContext, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import styled from "styled-components";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const Menu = styled.div`
   display: flex;
@@ -67,43 +69,66 @@ const MenusContext = createContext();
 
 function Menus({ children }) {
   const [openId, setIsOpen] = useState("");
+  console.log("id : ", openId);
+  const [position, setPosition] = useState({ x: 20, y: 20 });
+  const ref = useRef();
 
   const close = () => setIsOpen("");
   const open = setIsOpen;
 
-  function getPosition() {
-    const ref = useRef();
-  }
+  // function getPosition() {
+  //   const ref = useRef();
+
+  // }
 
   return (
-    <MenusContext.Provider value={{ openId, open, close }}>
+    <MenusContext.Provider
+      value={{ openId, open, close, position, setPosition, ref }}
+    >
       <Menu>{children}</Menu>
     </MenusContext.Provider>
   );
 }
 
 function Toggle({ id }) {
-  const { open, openId, close } = useContext(MenusContext);
-  id !== openId || openId === "" ? open(id) : close();
+  const { open, openId, close, setPosition } = useContext(MenusContext);
+
+  function handleClick(e) {
+    // console.log(id, openId); //
+    (id !== openId || openId === "") ? open(id) : close();
+    const rect = e.target.closest("button").getBoundingClientRect();
+    setPosition({
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8,
+    });
+  }
   return (
-    <StyledToggle onClick={() => open(id)}>
+    <StyledToggle onClick={handleClick}>
       <HiEllipsisHorizontal />
     </StyledToggle>
   );
 }
 function List({ id, children }) {
-  const { openId } = useContext(MenusContext);
-  // if (id !== openId && openId === "") return;
-  return <StyledList>{children}</StyledList>;
+  const { openId, position, ref, close } = useContext(MenusContext);
+  useClickOutside(ref, close);
+  if (id == openId) {
+    // console.log(id, openId);
+    return createPortal(
+      <StyledList ref={ref} position={position}>
+        {children}
+      </StyledList>,
+      document.body
+    );
+  }
 }
-function Button({ id, children }) {
+function Button({ children, icon, onClick }) {
   return (
     <li>
-      <StyledButton>{children}</StyledButton>
+      <StyledButton onClick={onClick}>{icon} {children}</StyledButton>
     </li>
   );
 }
-
+Menus.Menu = Menu;
 Menus.Toggle = Toggle;
 Menus.List = List;
 Menus.Button = Button;
