@@ -68,10 +68,8 @@ const StyledButton = styled.button`
 const MenusContext = createContext();
 
 function Menus({ children }) {
-  const [openId, setIsOpen] = useState("");
-  console.log("id : ", openId);
+  const [openedId, setIsOpen] = useState("");
   const [position, setPosition] = useState({ x: 20, y: 20 });
-  const ref = useRef();
 
   const close = () => setIsOpen("");
   const open = setIsOpen;
@@ -83,7 +81,7 @@ function Menus({ children }) {
 
   return (
     <MenusContext.Provider
-      value={{ openId, open, close, position, setPosition, ref }}
+      value={{ openedId, open, close, position, setPosition }}
     >
       <Menu>{children}</Menu>
     </MenusContext.Provider>
@@ -91,11 +89,11 @@ function Menus({ children }) {
 }
 
 function Toggle({ id }) {
-  const { open, openId, close, setPosition } = useContext(MenusContext);
+  const { open, openedId, close, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
-    // console.log(id, openId); //
-    (id !== openId || openId === "") ? open(id) : close();
+    // console.log(id, openedId); //
+    id !== openedId || openedId === "" ? open(id) : close();
     const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
       x: window.innerWidth - rect.width - rect.x,
@@ -109,10 +107,10 @@ function Toggle({ id }) {
   );
 }
 function List({ id, children }) {
-  const { openId, position, ref, close } = useContext(MenusContext);
-  useClickOutside(ref, close);
-  if (id == openId) {
-    // console.log(id, openId);
+  const { openedId, position, close } = useContext(MenusContext);
+  const ref = useClickOutside(close);
+  if (id == openedId) {
+    // console.log(id, openedId);
     return createPortal(
       <StyledList ref={ref} position={position}>
         {children}
@@ -122,9 +120,17 @@ function List({ id, children }) {
   }
 }
 function Button({ children, icon, onClick }) {
+  const { close } = useContext(MenusContext);
   return (
     <li>
-      <StyledButton onClick={onClick}>{icon} {children}</StyledButton>
+      <StyledButton
+        onClick={() => {
+          onClick?.();
+          close();
+        }}
+      >
+        {icon} {children}
+      </StyledButton>
     </li>
   );
 }
