@@ -1,8 +1,9 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import styled from "styled-components";
 import { useClickOutside } from "../hooks/useClickOutside";
+import propTypes from "prop-types";
 
 const Menu = styled.div`
   display: flex;
@@ -138,5 +139,11 @@ Menus.Menu = Menu;
 Menus.Toggle = Toggle;
 Menus.List = List;
 Menus.Button = Button;
+
+Button.propTypes = {
+  children: propTypes.node,
+  icon: propTypes.node,
+  onClick: propTypes.func,
+}
 
 export default Menus;

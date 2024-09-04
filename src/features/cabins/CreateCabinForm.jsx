@@ -115,7 +115,7 @@ function CreateCabinForm({ cabin = {}, closeModal, closeForm }) {
           {...register("maxCapacity", {
             required: "there is no maximum capacity",
             min: {
-              value: 3,
+              value: 1,
               message: "The maximum capacity should be at least 3",
             },
           })}
