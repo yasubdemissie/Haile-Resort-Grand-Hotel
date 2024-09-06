@@ -76,36 +76,6 @@ function CabinRow({ cabin }) {
         <Discount>{discount === 0 ? "_" : `${discount}` }</Discount>
         <Modal>
           <Menus>
-            {/* <button
-              title="duplicate"
-              disabled={createLoad}
-              onClick={handleDuplicate}
-            >
-              <HiSquare2Stack />
-            </button> */}
-
-            {/* <Modal.Open name="editCabin">
-                <button title="update">
-                  <HiPencil />
-                </button>
-              </Modal.Open>
-
-              <Modal.Window name="editCabin">
-                <CreateCabinForm cabin={cabin} name="editCabin" />
-              </Modal.Window> */}
-
-            {/* <Modal.Open name="delete">
-                <button title="delete">
-                  <HiTrash />
-                </button>
-              </Modal.Open>
-              <Modal.Window name="delete">
-                <ConfirmDelete
-                  resourceName={name}
-                  onConfirm={() => deleteCabin(id)}
-                  disabled={isDeleting}
-                />
-              </Modal.Window> */}
             <Menus.Toggle id={id} />
             <Menus.List id={id}>
               <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
