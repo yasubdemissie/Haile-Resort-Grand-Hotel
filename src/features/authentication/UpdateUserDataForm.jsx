@@ -22,11 +22,24 @@ function UpdateUserDataForm() {
   const [avatar, setAvatar] = useState(null);
   const { update, isUpdating } = useUpdateUser();
 
+  function reset() {
+    setFullName(currentFullName);
+    setAvatar(null);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     if (!fullName) return;
 
-    update({ fullName, avatar });
+    update(
+      { fullName, avatar },
+      {
+        onSettled: () => {
+          setFullName(currentFullName);
+          setAvatar(null);
+        },
+      }
+    );
   }
 
   return (
@@ -52,7 +65,7 @@ function UpdateUserDataForm() {
         />
       </FormRow>
       <FormRow>
-        <Button type="reset" variation="secondary" disabled={isUpdating}>
+        <Button onClick={reset} type="secondary" disabled={isUpdating}>
           Cancel
         </Button>
         <Button disabled={isUpdating}>Update account</Button>
