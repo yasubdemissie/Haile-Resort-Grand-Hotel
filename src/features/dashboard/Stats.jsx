@@ -1,5 +1,5 @@
 import { HiOutlineBriefcase, HiOutlineChartBar } from "react-icons/hi";
-import Stat from "./stat";
+import Stat from "./statistics";
 import propType from "prop-types";
 import { HiOutlineBanknotes, HiOutlineCalendarDays } from "react-icons/hi2";
 import { formatCurrency } from "../../utils/helpers";
