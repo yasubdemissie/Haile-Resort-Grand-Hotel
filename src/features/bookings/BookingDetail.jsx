@@ -12,7 +12,7 @@ import Modal from "../../ui/Modal";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useNavigate } from "react-router-dom";
-import { useBooking } from "./useBooking";
+import { useBooking } from "./useBoking";
 import { useCheckout } from "./useCheckout";
 import { HiArrowDownOnSquare } from "react-icons/hi2";
 import { useDeleteBooking } from "./useDeleteBooking";
